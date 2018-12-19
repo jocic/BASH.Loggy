@@ -1,0 +1,5 @@
+Usage: loggy {options}
+
+Available options:
+
+...
