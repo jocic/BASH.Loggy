@@ -4,3 +4,32 @@ language: bash
 
 env:
   - PATH=${PATH}:${HOME}/kcov/bin
+
+addons:
+  apt:
+    packages:
+      - binutils-dev
+      - libcurl4-openssl-dev
+      - libdw-dev
+      - libiberty-dev
+
+before_install:
+  - wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+
+install:
+  - tar xzf master.tar.gz
+  - cd kcov-master
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov ..
+  - make
+  - make install
+  - cd ../..
+  - rm -rf kcov-master
+  - mkdir -p coverage
+
+script:
+  - kcov coverage ./source/loggy.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
